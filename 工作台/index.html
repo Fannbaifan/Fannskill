@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>工作台 · Fann</title>
+<style>
+:root {
+  --bg: #0f1117;
+  --surface: #1a1d27;
+  --surface2: #222636;
+  --border: #2d3142;
+  --text: #e4e6ef;
+  --text2: #9298ad;
+  --accent: #ff4081;
+  --accent2: #7c4dff;
+  --green: #00e676;
+  --orange: #ffab40;
+  --blue: #448aff;
+  --radius: 16px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+.header {
+  padding: 32px 40px 24px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, rgba(255,64,129,0.08), rgba(124,77,255,0.08));
+}
+.header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+.header p {
+  margin-top: 8px;
+  color: var(--text2);
+  font-size: 14px;
+}
+.container {
+  padding: 32px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.section-title {
+  font-size: 13px;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+.workflow-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+.workflow-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  cursor: pointer;
+  transition: all .2s ease;
+  text-decoration: none;
+  color: var(--text);
+  display: block;
+  position: relative;
+  overflow: hidden;
+}
+.workflow-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  opacity: 0;
+  transition: opacity .2s;
+}
+.workflow-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  box-shadow: 0 12px 40px rgba(255,64,129,0.12);
+}
+.workflow-card:hover::before {
+  opacity: 1;
+}
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.card-icon {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+.card-title {
+  font-size: 17px;
+  font-weight: 600;
+}
+.card-subtitle {
+  font-size: 12px;
+  color: var(--text2);
+  margin-top: 3px;
+}
+.card-desc {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.7;
+  margin-bottom: 18px;
+}
+.card-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--text2);
+}
+.card-meta span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.status-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+}
+.status-dot.partial {
+  background: var(--orange);
+  box-shadow: 0 0 8px var(--orange);
+}
+.status-dot.pending {
+  background: var(--text2);
+  box-shadow: none;
+}
+.quick-links {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+.quick-links h3 {
+  font-size: 15px;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+.link-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.link-item {
+  color: var(--text2);
+  font-size: 13px;
+  text-decoration: none;
+  padding: 10px 12px;
+  border-radius: 8px;
+  transition: all .15s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.link-item:hover {
+  background: var(--surface2);
+  color: var(--text);
+}
+.link-item .arrow {
+  opacity: 0.5;
+}
+.open-hint {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 500;
+  opacity: 0.8;
+  transition: opacity .2s;
+}
+.workflow-card:hover .open-hint {
+  opacity: 1;
+}
+.fallback-path {
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--text2);
+  word-break: break-all;
+  background: var(--surface2);
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-family: monospace;
+}
+.footer {
+  padding: 24px 40px;
+  text-align: center;
+  color: var(--text2);
+  font-size: 12px;
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>工作台</h1>
+  <p>所有工作流统一入口 · 反骨生意经 · 内容运营 · 老板IP赛道</p>
+</div>
+
+<div class="container">
+
+  <div class="section-title">我的工作流</div>
+  <div class="workflow-grid">
+
+    <a class="workflow-card" id="fgCard" href="#"
+      data-target="file:///C:/Users/Fann/WorkBuddy/Claw/fanggu-shengyijing/dashboard.html">
+      <div class="card-header">
+        <div class="card-icon">📊</div>
+        <div>
+          <div class="card-title">反骨生意经 · 账号管理</div>
+          <div class="card-subtitle">抖音账号内容资产工作台</div>
+        </div>
+      </div>
+      <div class="card-desc">
+        21条内容归档、OCR逐字稿、发布文案、互动数据、五维内容解构（选题/钩子/结构/情绪/转化），以及数据看板与分析报告。
+      </div>
+      <div class="card-meta">
+        <span><i class="status-dot"></i> 20/21 已解构</span>
+        <span>📝 11条图文已OCR</span>
+        <span>🎬 9条视频已转录(SenseVoice高精度)</span>
+      </div>
+      <div class="open-hint">点击打开工作台 →</div>
+      <div class="fallback-path" id="fgPath" style="display:none;">file:///C:/Users/Fann/WorkBuddy/Claw/fanggu-shengyijing/dashboard.html</div>
+    </a>
+
+    <div class="workflow-card" style="opacity:0.5; cursor:default;">
+      <div class="card-header">
+        <div class="card-icon" style="background:var(--border);">➕</div>
+        <div>
+          <div class="card-title">添加新工作流</div>
+          <div class="card-subtitle">占位</div>
+        </div>
+      </div>
+      <div class="card-desc">
+        后续新工作流将统一归集到这里。告诉我你需要什么，我会把它做成卡片放进来。
+      </div>
+      <div class="card-meta">
+        <span><i class="status-dot pending"></i> 待创建</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="quick-links">
+    <h3>快速链接</h3>
+    <div class="link-list">
+      <a class="link-item" href="#" data-target="file:///C:/Users/Fann/WorkBuddy/Claw/fanggu-shengyijing/dashboard.html">
+        <span>反骨生意经工作台（完整版）</span>
+        <span class="arrow">→</span>
+      </a>
+      <a class="link-item" href="#" data-target="file:///C:/Users/Fann/WorkBuddy/Claw/fanggu-shengyijing/data/content_data.json">
+        <span>原始数据文件 content_data.json</span>
+        <span class="arrow">→</span>
+      </a>
+      <a class="link-item" href="#" data-target="file:///C:/Users/Fann/WorkBuddy/Claw/fanggu-shengyijing/tools/">
+        <span>工具脚本目录（转录/OCR/数据生成）</span>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  更新于 2026-07-28 · 固定入口：工作台/index.html
+</div>
+
+<script>
+(function() {
+  function openUrl(rawTarget, fallbackEl) {
+    var url = rawTarget + (rawTarget.indexOf('?') === -1 ? '?' : '&') + 'v=' + Date.now();
+    var win = window.open(url, '_blank');
+    if (win && win.location && win.location.href) {
+      return true;
+    }
+    try {
+      window.location.href = url;
+      return true;
+    } catch(err) {}
+    try {
+      window.location.replace(url);
+      return true;
+    } catch(err) {}
+    if (fallbackEl) {
+      fallbackEl.style.display = 'block';
+      fallbackEl.textContent = '点击无响应，请复制此路径到浏览器打开：' + rawTarget;
+    }
+    return false;
+  }
+
+  var card = document.getElementById('fgCard');
+  if (card) {
+    card.addEventListener('click', function(e) {
+      e.preventDefault();
+      openUrl(card.getAttribute('data-target'), document.getElementById('fgPath'));
+    });
+  }
+
+  document.querySelectorAll('.link-item[data-target]').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      openUrl(link.getAttribute('data-target'));
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

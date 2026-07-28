@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Whisper model cache
+*.bin
+*.pt
+models/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# API keys (never commit)
+*.key
+.env
+secrets.json
