@@ -1,6 +1,7 @@
 // 反骨生意经 · 内容数据
 // 自动生成，请勿手动编辑
-// 更新方式：运行 tools/update_dashboard_data.py
+// 生成时间: 2026-07-29 12:33:55
+// 内容条目: 26
 const CONTENT = [
   {
     "id": 1,
@@ -637,7 +638,7 @@ const CONTENT = [
       "completion_rate": 0.005505,
       "s5_completion_rate": null,
       "click_rate": 0.2,
-      "s2_bounce_rate": null,
+      "s2_bounce_rate": 0.563758,
       "avg_play_duration": null,
       "homepage_visits": 4,
       "follower_gain": 0
@@ -713,16 +714,16 @@ const CONTENT = [
     "transcriptStatus": "❌待补",
     "copy": "",
     "stats": {
-      "digg_count": 114,
+      "digg_count": 116,
       "comment_count": 0,
       "share_count": 14,
       "collect_count": 57,
-      "play_count": 3806,
-      "completion_rate": 0.164866,
-      "s5_completion_rate": 0.164866,
+      "play_count": 3873,
+      "completion_rate": 0.164352,
+      "s5_completion_rate": 0.164352,
       "click_rate": 0.375,
-      "s2_bounce_rate": 0.629154,
-      "avg_play_duration": 3.334707,
+      "s2_bounce_rate": 0.627493,
+      "avg_play_duration": 3.338316,
       "homepage_visits": 0,
       "follower_gain": 0
     },
