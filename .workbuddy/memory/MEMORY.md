@@ -7,7 +7,7 @@
 - **内容方向：** 老板IP打造 / 创始人IP / 短视频运营方法论 / 内容获客
 - **内容形式：** 图文为主（52.6%），视频次之（42.1%），偶尔发文章
 - **核心标签：** #老板IP #创始人IP #这是本宫自己写的 #一般人不告诉他
-- **内容时间跨度：** 2025-08 至 2026-06（已归档21条）
+- **内容时间跨度：** 2025-08 至 2026-07（已归档26条，含播放数据）
 
 ## 技能体系
 - **fanggu-shengyijing** — 自有账号内容管理（链接/逐字稿/数据归档）
@@ -41,6 +41,14 @@
    - **跳转方式多重兜底：** 优先 `window.open(url, '_blank')`，其次 `window.location.href`，再次 `window.location.replace`，最后显示可复制路径让用户手动打开。
    - **更新完必须验证：** 用 `node -e "new Function(script)"` 验证 JS 语法；重新打开工作台预览确认数字已刷新、点击有响应。
 
-4. **内容数据同步规则：**
-   - `data/content_data.json` 与 `dashboard.html` 内嵌数据必须保持一致。
-   - 新增/修改内容后，必须重新执行内嵌脚本，不能手动改 HTML 里的数据。
+4. **内容数据同步规则（2026-07-29 已重构）：**
+   - **数据与 HTML 彻底分离。** `dashboard.html` 不再内嵌任何数据，数据放在 `dashboard-data.js` 中，通过 `<script src="dashboard-data.js">` 加载。
+   - **更新数据时，永远只改 `dashboard-data.js`，不动 `dashboard.html`。** 使用 `tools/update_dashboard_data.py` 脚本自动生成。
+   - 运行 `python tools/update_dashboard_data.py` 后，脚本会自动从 `content_data.json` 生成 `dashboard-data.js`，并验证 JS 语法。
+   - **绝对禁止** 再用字符串替换的方式往 HTML 里塞 JSON 数据——这是导致工作台反复打不开的根本原因。
+
+5. **dashboard-data.js 更新流程：**
+   - 修改 `content_data.json`（添加/更新数据）
+   - 运行 `python tools/update_dashboard_data.py`
+   - 脚本自动验证 JS 语法
+   - 完成，无需碰 dashboard.html
