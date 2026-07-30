@@ -153,6 +153,27 @@ def main():
             return
         
         print("获取视频列表...")
+        
+        # 先尝试点击「投稿列表」标签
+        try:
+            # 尝试多种选择器
+            tab_selectors = [
+                'text=投稿列表',
+                '[class*="tab"]:has-text("投稿列表")',
+                'button:has-text("投稿列表")',
+                'div:has-text("投稿列表")',
+            ]
+            for sel in tab_selectors:
+                try:
+                    page.click(sel, timeout=3000)
+                    print(f"  已点击「投稿列表」")
+                    page.wait_for_timeout(3000)
+                    break
+                except:
+                    continue
+        except:
+            print("  未找到「投稿列表」标签，尝试直接获取...")
+        
         video_ids = page.evaluate('''() => {
             const ids = [];
             document.querySelectorAll('a[href*="item_id="]').forEach(a => {
